@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10090c">
+<title>The Enchanted Mirror</title>
+
+<style>
+*{box-sizing:border-box}
+:root{--gold:#d5b16b;--ivory:#f0dfbd}
+body{
+ margin:0;min-height:100vh;color:var(--ivory);
+ font-family:Georgia,"Times New Roman",serif;
+ background:radial-gradient(ellipse at 50% 30%,#49302e,#211316 48%,#0b0709);
+ text-align:center;overflow-x:hidden
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:5;
+ background:repeating-linear-gradient(0deg,transparent 0 3px,#0000000b 4px)
+}
+.room{max-width:900px;margin:auto;padding:25px 14px 45px}
+.ornament{color:var(--gold);font-size:24px}
+h1{
+ color:var(--gold);font-weight:normal;letter-spacing:3px;
+ font-size:clamp(27px,6vw,46px);
+ text-shadow:0 0 22px #b77c3866;margin:14px 0
+}
+.subtitle{color:#c7b59d;line-height:1.9}
+.scene{
+ position:relative;max-width:540px;height:440px;margin:28px auto 20px;
+ display:flex;align-items:center;justify-content:center;overflow:hidden;
+ background:radial-gradient(ellipse at 50% 40%,#60433c,#291a1d 52%,#10090c);
+ border:1px solid #8f6b3c;box-shadow:0 0 45px #000,inset 0 0 65px #000
+}
+.candle{
+ position:absolute;bottom:25px;width:12px;height:65px;
+ background:linear-gradient(90deg,#6e4c30,#e5c99a,#76502d)
+}
+.candle:before{
+ content:"";position:absolute;top:-19px;left:3px;width:7px;height:19px;
+ background:#ffcf76;border-radius:50%;box-shadow:0 0 20px #ff9c39;
+ animation:flame .8s infinite alternate
+}
+.left{left:35px}.right{right:35px}
+@keyframes flame{to{transform:scale(.8,1.2);filter:brightness(1.4)}}
+.mirror{
+ position:relative;width:min(72vw,310px);height:365px;max-height:85%;
+ padding:12px;border-radius:48% 48% 8% 8%;
+ background:linear-gradient(115deg,#4d3019,#e2bf76 18%,#6b4723 30%,#d8b36d 48%,#5c3b20 68%,#d5ad63 83%,#352114);
+ box-shadow:0 0 0 3px #2b1a10,0 0 0 7px #99713c,0 0 25px #d1a55b55;
+ cursor:pointer;z-index:2
+}
+.mirror:before{
+ content:"✦ ❦ ✦";position:absolute;top:4px;left:0;right:0;
+ color:#f8df9b;font-size:22px
+}
+.glass{
+ position:relative;width:100%;height:100%;overflow:hidden;
+ border-radius:48% 48% 5% 5%;border:3px solid #3a2518;
+ background:radial-gradient(ellipse at 50% 30%,#77717c,#32303b 38%,#090a12 85%);
+ box-shadow:inset 0 0 35px #a6b9d755,inset 0 0 90px #000
+}
+.glass:after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(120deg,#ffffff24,transparent 28%,transparent 65%,#ffffff0d)
+}
+.reflection{
+ position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ transition:filter 1s
+}
+.face{
+ width:100%;height:100%;object-fit:cover;object-position:center;
+ opacity:.72;filter:grayscale(.65) contrast(1.2) brightness(.68);
+ mix-blend-mode:screen;
+ mask-image:linear-gradient(to bottom,transparent 0%,black 20%,black 78%,transparent 100%)
+}
+.mirror-name{
+ position:absolute;bottom:18px;z-index:2;left:0;right:0;
+ color:#e6d3ae;font-size:12px;letter-spacing:3px;text-shadow:0 2px 8px black
+}
+.mist{
+ position:absolute;inset:-20%;pointer-events:none;z-index:3;opacity:0;
+ background:
+ radial-gradient(ellipse at 25% 70%,#d5d1d733,transparent 28%),
+ radial-gradient(ellipse at 70% 60%,#e4e0e522,transparent 35%),
+ radial-gradient(ellipse at 50% 40%,#ffffff19,transparent 40%);
+ filter:blur(12px);animation:mist 7s linear infinite alternate;
+ transition:opacity 1s
+}
+@keyframes mist{
+ from{transform:translate(-5%,4%) scale(.9)}
+ to{transform:translate(6%,-4%) scale(1.15)}
+}
+.scene.awake .mist{opacity:1}
+.scene.awake .mirror{animation:shiver 3s ease-in-out infinite}
+@keyframes shiver{
+ 0%,100%{transform:rotate(0)}
+ 25%{transform:rotate(.3deg)}
+ 75%{transform:rotate(-.3deg)}
+}
+button{
+ border:1px solid var(--gold);padding:13px 17px;color:#f8e8c9;
+ background:linear-gradient(#4a2426,#210f14);font-size:15px;
+ font-family:inherit;cursor:pointer;box-shadow:0 5px 16px #0008;
+ transition:.2s;overflow-wrap:anywhere
+}
+button:hover{background:#70402d}
+button:disabled{opacity:.65;cursor:default}
+.primary{min-width:210px}
+.panel{
+ max-width:540px;margin:18px auto;padding:22px 17px;
+ border:1px solid #8c6a40;background:#140d10ed;
+ box-shadow:0 12px 30px #0008;line-height:1.9
+}
+.hidden{display:none!important}
+.question{font-size:20px;color:#e5c78c;margin:8px 0 18px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.options button{min-width:0;padding:12px 7px}
+.small{font-size:13px;color:#aa9680;line-height:1.8}
+textarea{
+ width:100%;min-height:100px;padding:12px;margin:8px 0;
+ color:#f2dfbd;background:#201518;border:1px solid #8f6b42;
+ font:16px Georgia,serif
+}
+#resultTitle{font-size:26px;color:var(--gold)}
+#resultText{line-height:2;color:#e8d6b7}
+footer{font-size:12px;color:#89745c;margin-top:35px;letter-spacing:2px}
+@media(max-width:420px){
+ .scene{height:410px}
+ .mirror{height:330px}
+ .panel{padding:18px 12px}
+ .options{gap:8px}
+ .options button{font-size:14px}
+}
+</style>
+</head>
+
+<body>
+<main class="room">
+ <div class="ornament">✦ ❦ ✦</div>
+ <h1>THE ENCHANTED MIRROR</h1>
+ <p class="subtitle">
+  Le miroir enchanté<br>
+  Certains secrets ne se révèlent qu'aux plus courageux.
+ </p>
+
+ <section class="scene" id="scene">
+  <div class="candle left"></div>
+  <div class="candle right"></div>
+
+  <div class="mirror" id="mirror" role="button" tabindex="0"
+       aria-label="Toucher le miroir">
+   <div class="glass">
+    <div class="reflection">
+     <img class="face"
+      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=85"
+      alt="Une mystérieuse présence dans le miroir">
+    </div>
+    <div class="mirror-name">THE WATCHER</div>
+   </div>
+  </div>
+  <div class="mist"></div>
+ </section>
+
+ <p id="intro">Approchez-vous du miroir... mais ne faites pas confiance à tout ce que vous voyez.</p>
+ <button class="primary" id="awaken">Éveiller l'esprit</button>
+
+ <section class="panel hidden" id="quiz">
+  <div class="ornament">☽ ✦ ☾</div>
+  <p id="progress" class="small">Question 1 sur 4</p>
+  <div class="question" id="question"></div>
+  <div class="options" id="options"></div>
+ </section>
+
+ <section class="panel hidden" id="result">
+  <div class="ornament">❦</div>
+  <h2 id="resultTitle"></h2>
+  <p id="resultText"></p>
+
+  <div id="messageForm" class="hidden">
+   <label for="visitorMessage">Laissez votre message dans le miroir</label>
+   <textarea id="visitorMessage" placeholder="Écrivez votre message ici..."></textarea>
+   <button id="saveMessage">Sceller mon message</button>
+   <p id="saved" class="small"></p>
+  </div>
+
+  <button id="again">Recommencer l'expérience</button>
+ </section>
+
+ <footer>BEYOND THE GLASS · EST. 1897</footer>
+</main>
+
+<script>
+const questions = [
+ {
+  q:"Quel est mon signe astrologique ?",
+  a:["Bélier","Lion","Balance","Taureau"],
+  correct:1
+ },
+ {
+  q:"Quel est mon parfum préféré ?",
+  a:["Le Monde Sur Mesure","Chanel N°5","Dior Sauvage","Oud"],
+  correct:0
+ },
+ {
+  q:"Quelle est ma couleur préférée ?",
+  a:["Vert émeraude","Bleu royal","Bordeaux","Or rose"],
+  correct:0
+ },
+ {
+  q:"Quelle est ma pierre précieuse préférée ?",
+  a:["Diamant bleu","Diamant rose","Musgravite","Opale noire"],
+  correct:0
+ }
+];
+
+let current=0,score=0,locked=false;
+const $=id=>document.getElementById(id);
+const scene=$("scene"),mirror=$("mirror");
+
+function awaken(){
+ if($("awaken").disabled)return;
+ $("awaken").disabled=true;
+ scene.classList.add("awake");
+ $("intro").textContent="L'esprit s'éveille... Il vous observe.";
+ setTimeout(()=>{
+  $("awaken").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+  current=0;score=0;showQuestion();
+  $("quiz").scrollIntoView({behavior:"smooth",block:"center"});
+ },900);
+}
+$("awaken").addEventListener("click",awaken);
+mirror.addEventListener("click",awaken);
+mirror.addEventListener("keydown",e=>{
+ if(e.key==="Enter"||e.key===" ")awaken();
+});
+
+function showQuestion(){
+ locked=false;
+ const item=questions[current];
+ $("progress").textContent=`Question ${current+1} sur ${questions.length}`;
+ $("question").textContent=item.q;
+ $("options").innerHTML="";
+
+ item.a.forEach((answer,index)=>{
+  const b=document.createElement("button");
+  b.textContent=answer;
+  b.addEventListener("click",()=>choose(index));
+  $("options").appendChild(b);
+ });
+}
+
+function choose(index){
+ if(locked)return;
+ locked=true;
+ if(index===questions[current].correct)score++;
+
+ [...$("options").children].forEach((b,i)=>{
+  b.disabled=true;
+  if(i===questions[current].correct)b.style.borderColor="#9cb58b";
+  else if(i===index)b.style.borderColor="#9b4545";
+ });
+
+ setTimeout(()=>{
+  current++;
+  if(current<questions.length)showQuestion();
+  else showResult();
+ },650);
+}
+
+function showResult(){
+ $("quiz").classList.add("hidden");
+ $("result").classList.remove("hidden");
+
+ const passed=score>=3;
+ $("resultTitle").textContent=passed
+  ?"Bienvenue, âme mystérieuse..."
+  :"N'avez-vous donc rien de mieux à faire que de m'observer ?";
+
+ $("resultText").textContent=passed
+  ?`Vous avez obtenu ${score} bonnes réponses sur 4. Le miroir vous accepte. Laissez votre message avant que les bougies ne s'éteignent.`
+  :`Vous avez obtenu ${score} bonnes réponses sur 4. Le miroir refuse de vous révéler ses secrets. Revenez lorsque vous serez prête.`;
+
+ $("messageForm").classList.toggle("hidden",!passed);
+ mirror.style.filter=passed?"brightness(1.25) sepia(.15)":"brightness(.65) sepia(.5)";
+ $("result").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+$("saveMessage").addEventListener("click",()=>{
+ const msg=$("visitorMessage").value.trim();
+ if(!msg){
+  $("saved").textContent="Veuillez écrire un message avant de le sceller.";
+  return;
+ }
+ $("saved").textContent="Votre message est scellé sur cette page : "+msg+
+ " — Il n'est pas envoyé au propriétaire du site.";
+});
+
+$("again").addEventListener("click",()=>{
+ current=0;score=0;locked=false;
+ $("result").classList.add("hidden");
+ $("quiz").classList.add("hidden");
+ $("awaken").classList.remove("hidden");
+ $("awaken").disabled=false;
+ $("intro").textContent="Approchez-vous du miroir... mais ne faites pas confiance à tout ce que vous voyez.";
+ scene.classList.remove("awake");
+ mirror.style.filter="";
+ $("visitorMessage").value="";
+ $("saved").textContent="";
+ window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>
